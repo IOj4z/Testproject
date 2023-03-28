@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
@@ -27,9 +28,20 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
-//        Passport::tokensCan([
-//            'admin' => 'Admin access',
-//            'driver' => 'Driver access',
-//        ]);
+        Passport::tokensCan([
+            'admin' => 'Admin access',
+            'driver' => 'Driver access',
+        ]);
+
+
+        Gate::define('view', function (User $user, $model) {
+
+            return $user->hasAccess("view_{$model}") || $user->hasAccess("edit_{$model}");
+        });
+
+        Gate::define('edit', function (User $user, $model) {
+
+            return $user->hasAccess("edit_{$model}");
+        });
     }
 }

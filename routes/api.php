@@ -15,18 +15,32 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('login', 'AuthController@login');
 Route::group([
-//    'middleware' => ['auth:api', 'scope:admin'],
+    'middleware' => ['auth:api', 'scope:admin'],
     'prefix' => 'admin',
     'namespace' => 'API\V1\SUPER_USER'
 ], function () {
     Route::apiResource('users', 'UserController');
+    Route::post('upload','ImageController@upload');
 });
 
-//Route::apiResource('driver', App\Http\Controllers\API\V1\USER\UserController::class,['index'])->only('index', 'show');
+
 Route::group([
+    'middleware' => ['auth:api', 'scope:driver'],
+    'prefix' => 'driver',
+], function () {
+    Route::get('user', 'AuthController@user');
+    Route::put('users/info', 'AuthController@updateInfo');
+    Route::put('users/password', 'AuthController@updatePassword');
+    Route::post('logout', 'AuthController@logout');
+});
+
+/*Route::group([
 //    'middleware' => ['auth:api', 'scope:drivers'],
     'prefix' => 'drivers',
     'namespace' => 'API\V1\USER'
 ], function () {
-    Route::apiResource('user', 'UserController')->only('index', 'show');
-});
+    Route::get('user', 'AuthController@user');
+    Route::put('users/info', 'AuthController@updateInfo');
+    Route::put('users/password', 'AuthController@updatePassword');
+    Route::post('logout', 'AuthController@logout');
+});*/

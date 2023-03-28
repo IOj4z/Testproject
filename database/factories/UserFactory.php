@@ -23,5 +23,7 @@ $factory->define(User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'phone' => $faker->unique()->phoneNumber,
         'password' => \Illuminate\Support\Facades\Hash::make(1234),
+        'role_id' => \App\Role::inRandomOrder()->first()->id
+
     ];
 });
