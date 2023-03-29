@@ -19,12 +19,10 @@ class ImageUploadRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return string
      */
     public function rules()
     {
-        return [
-            'image' =>'required|mimes:jpg,jpeg,png'
-        ];
+        return 'required|mimes:jpg,jpeg,png';
     }
 }

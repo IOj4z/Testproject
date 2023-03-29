@@ -46,7 +46,6 @@ class AuthController extends Controller
     public function user()
     {
         $user = Auth::user();
-        dd($user);
         return (new UsersResourse($user))->additional([
             'data'=> [
                 'permissions' => $user->permissions(),

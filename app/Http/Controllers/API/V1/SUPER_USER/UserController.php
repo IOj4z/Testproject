@@ -34,15 +34,15 @@ class UserController extends Controller
      */
     public function store(UserCreateRequest $request)
     {
-        Gate::authorize('edit', "users");
-       $phone =  rand(1111111111,9999999999);
-       $pass =  Hash::make(1234);
 
+        Gate::authorize('edit', "users");
+       $phone =  rand(11111111,99999999);
+       $pass =  Hash::make(1234);
        $user = User::create([
            'phone'=>$phone,
            'last_name'=>$phone,
            'password'=>$pass,
-           'file'=>$request->file('image'),
+           'file'=>User::upload($request->only('image')),
            'role_id'=>3]);
        return response(new UsersResourse($user),Response::HTTP_CREATED);
 
@@ -71,12 +71,13 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         Gate::authorize('edit', "users");
        $user = User::find($id);
 
         $user->update([
             'phone' => $request->input('phone'),
-            'file' => $request->input('image'),
+            'file' => User::upload($request->only('image')),
             'email' => $request->input('email'),
             'last_name' => $request->input('last_name'),
         ]);
